@@ -26,7 +26,7 @@ export abstract class EntityBase extends BaseEntity {
   @Column({ name: 'created_by', type: 'varchar', length: '100', default: 'app_dev' })
   createdBy: string
 
-	@Field(() => String)
+	@Field(() => String, { nullable: true })
   @Column({ name: 'updated_by', type: 'varchar', length: '100', nullable: true })
   updatedBy?: string
 

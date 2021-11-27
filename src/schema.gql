@@ -7,7 +7,7 @@ type User {
   createdAt: DateTime!
   updatedAt: DateTime!
   createdBy: String!
-  updatedBy: String!
+  updatedBy: String
   isDeleted: Boolean!
   firstName: String!
   lastName: String!
