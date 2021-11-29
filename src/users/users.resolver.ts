@@ -1,5 +1,8 @@
+import { ParseUUIDPipe } from '@nestjs/common'
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql'
+
 import { UsersService } from './users.service'
+
 import { User } from './entities/user.entity'
 import { CreateUserInput } from './inputs/create-user.input'
 import { UpdateUserInput } from './inputs/update-user.input'
@@ -29,7 +32,7 @@ export class UsersResolver {
   }
 
   @Mutation(returns => User)
-  removeUser(@Args('id', { type: () => ID }) id: string) {
+  removeUser(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.usersService.remove(id)
   }
 }

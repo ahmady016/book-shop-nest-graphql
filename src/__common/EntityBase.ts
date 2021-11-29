@@ -6,11 +6,11 @@ import {
 	Column,
 } from 'typeorm'
 
-import { Field, ObjectType } from '@nestjs/graphql'
+import { ObjectType, Field, ID } from '@nestjs/graphql'
 
 @ObjectType()
 export abstract class EntityBase extends BaseEntity {
-	@Field(() => String)
+	@Field(() => ID)
 	@PrimaryGeneratedColumn('uuid')
 	id: string
 

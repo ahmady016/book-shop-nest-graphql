@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type User {
-  id: String!
+  id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   createdBy: String!
@@ -49,5 +49,5 @@ input UpdateUserInput {
   birthDate: String
   address: String
   mobile: String
-  id: String!
+  id: ID!
 }
