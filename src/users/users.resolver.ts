@@ -1,12 +1,11 @@
-import { ParseUUIDPipe } from '@nestjs/common'
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql'
+import { ParseUUIDPipe } from '@nestjs/common'
 
 import { UsersService } from './users.service'
 
 import { User } from './entities/user.entity'
 import { CreateUserInput } from './inputs/create-user.input'
 import { UpdateUserInput } from './inputs/update-user.input'
-
 @Resolver(of => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
