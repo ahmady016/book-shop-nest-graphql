@@ -11,7 +11,7 @@ import {
 import { Gender } from 'src/__common/types'
 
 @InputType()
-export class CreateUserInput {
+export class CreateProfileInput {
   @Field(() => String)
   @IsString()
   @Length(2, 20)
@@ -30,13 +30,33 @@ export class CreateUserInput {
   @IsDateString()
   birthDate: string
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @Length(10, 500)
   address: string
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @Length(2, 100)
+  city: string
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @Length(2, 100)
+  country: string
+
+  @Field(() => String, { nullable: true })
   @IsNumberString()
   @Length(11, 11)
   mobile: string
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @Length(2, 400)
+  photoURL: string
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @Length(2, 1000)
+  hobbies: string
 }

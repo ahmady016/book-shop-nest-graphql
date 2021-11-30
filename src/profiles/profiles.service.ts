@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 
-import { User } from './entities/user.entity'
-import { CreateUserInput } from './inputs/create-user.input'
-import { UpdateUserInput } from './inputs/update-user.input'
+import { Profile } from './entities/profile.entity'
+import { CreateProfileInput } from './inputs/create-profile.input'
+import { UpdateProfileInput } from './inputs/update-profile.input'
 
 @Injectable()
-export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+export class ProfilesService {
+  constructor(@InjectRepository(Profile) private userRepo: Repository<Profile>) {}
 
   list() {
     return this.userRepo.find({ order: { createdAt: 'ASC' } })
@@ -16,16 +16,16 @@ export class UsersService {
 
   async findById(id: string) {
     let existedUser = await this.userRepo.findOne(id)
-    if (!existedUser) throw new NotFoundException('user not found')
+    if (!existedUser) throw new NotFoundException('user profile not found')
     return existedUser
   }
 
-  create(createUserInput: CreateUserInput) {
+  create(createUserInput: CreateProfileInput) {
     let newUser = this.userRepo.create(createUserInput)
     return this.userRepo.save(newUser)
   }
 
-  async update(id: string, updateUserInput: UpdateUserInput) {
+  async update(id: string, updateUserInput: UpdateProfileInput) {
     let existedUser = await this.findById(id)
     let userToUpdate = this.userRepo.merge(existedUser, updateUserInput)
     return this.userRepo.save(userToUpdate)

@@ -11,7 +11,7 @@ import { MulterModule } from '@nestjs/platform-express'
 import { PostgreConfigService } from './__common/PostgreConfigService'
 import { mailerConfigFactory } from './__common/mailerConfigFactory'
 
-import { UsersModule } from './users/users.module'
+import { ProfilesModule } from './profiles/profiles.module'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -34,7 +34,7 @@ import { UsersModule } from './users/users.module'
     MulterModule.register({
       dest: join(__dirname, '..', 'public'),
     }),
-    UsersModule,
+    ProfilesModule,
   ],
 })
 export class AppModule {}
