@@ -19,6 +19,8 @@ type Profile {
   mobile: String
   photoURL: String
   hobbies: String
+  userId: String
+  user: User
 }
 
 """
@@ -26,15 +28,53 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String
+  isDeleted: Boolean!
+  email: String!
+  role: String!
+  status: String!
+  profile: Profile
+}
+
 type Query {
+  currentUser: User!
   profiles: [Profile!]!
   profile(id: ID!): Profile!
 }
 
 type Mutation {
+  signup(signupInput: SignupInput!): String!
+  activate(activateInput: ActivateInput!): User!
+  signin(signinInput: SigninInput!): User!
+  refresh: User!
+  signout: String!
   createProfile(createUserInput: CreateProfileInput!): Profile!
   updateUProfile(updateUserInput: UpdateProfileInput!): Profile!
   removeProfile(id: ID!): Profile!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  gender: String!
+  birthDate: String!
+}
+
+input ActivateInput {
+  email: String!
+  verificationCode: String!
+}
+
+input SigninInput {
+  email: String!
+  password: String!
 }
 
 input CreateProfileInput {

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { join } from 'path'
 
+import { join } from 'path'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -11,6 +11,7 @@ import { MulterModule } from '@nestjs/platform-express'
 import { PostgreConfigService } from './__common/PostgreConfigService'
 import { mailerConfigFactory } from './__common/mailerConfigFactory'
 
+import { AuthModule } from './auth/auth.module'
 import { ProfilesModule } from './profiles/profiles.module'
 @Module({
   imports: [
@@ -22,6 +23,10 @@ import { ProfilesModule } from './profiles/profiles.module'
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: ({ req, res }) => ({ req, res }),
+      cors: {
+        credentials: true,
+        origin: true
+      },
       playground: true,
     }),
     MailerModule.forRootAsync({
@@ -34,6 +39,7 @@ import { ProfilesModule } from './profiles/profiles.module'
     MulterModule.register({
       dest: join(__dirname, '..', 'public'),
     }),
+    AuthModule,
     ProfilesModule,
   ],
 })

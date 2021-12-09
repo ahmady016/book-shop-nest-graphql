@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   // create the nest logger instance
-  const logger = new Logger("Bootstrap_Server")
+  const logger = new Logger('ServerBootstrap')
   // create the nest app
   const app = await NestFactory.create(AppModule)
   // setup global validation
@@ -17,10 +17,12 @@ async function bootstrap() {
   app.use(cookieParser())
   // setup the port and domain url
   const PORT = process.env.PORT || 8007
-  const BASE_URL = process.env.BASE_URL || 'http://localhost'
+  const DOMAIN = process.env.NODE_ENV
+    ? 'https://book-shop-nest-graphql.herokuapp.com'
+    : 'http://localhost'
   // run the app [web server]
   await app.listen(PORT)
   // log message after sever start
-  logger.log(`The Web Server is running on ${BASE_URL}:${PORT}`)
+  logger.log(`The Web Server is running on ${DOMAIN}:${PORT}`)
 }
 bootstrap()

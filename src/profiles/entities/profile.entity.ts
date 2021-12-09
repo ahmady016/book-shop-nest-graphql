@@ -1,9 +1,10 @@
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, OneToOne, JoinColumn } from 'typeorm'
 
 import { ObjectType, Field } from '@nestjs/graphql'
 
 import { EntityBase } from 'src/__common/EntityBase'
 import { Gender } from 'src/__common/types'
+import { User } from 'src/auth/entities/user.entity'
 
 @ObjectType()
 @Entity('profiles')
@@ -47,4 +48,13 @@ export class Profile extends EntityBase {
   @Field(() => String, { nullable: true })
   @Column({ name: 'hobbies', type: 'varchar', length: 1000, nullable: true })
   hobbies: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ name: 'user_id', nullable: true })
+  userId: string
+
+  @Field(() => User, { nullable: true })
+  @OneToOne(() => User, (user) => user.profile)
+  @JoinColumn({ name: 'user_id' })
+  user: User
 }

@@ -1,38 +1,53 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { ParseUUIDPipe } from '@nestjs/common'
 
 import { ProfilesService } from './profiles.service'
 
+import { User } from 'src/auth/entities/user.entity'
 import { Profile } from './entities/profile.entity'
+
 import { CreateProfileInput } from './inputs/create-profile.input'
 import { UpdateProfileInput } from './inputs/update-profile.input'
 
-@Resolver(of => Profile)
+@Resolver(() => Profile)
 export class ProfilesResolver {
-  constructor(private readonly usersService: ProfilesService) {}
+  constructor(private readonly profilesService: ProfilesService) {}
 
-  @Query(returns => [Profile], { name: 'profiles' })
+  @ResolveField(() => User)
+  user(@Parent() profile: Profile) {
+    return this.profilesService.findUser(profile.userId)
+  }
+
+  @Query(() => [Profile], { name: 'profiles' })
   list() {
-    return this.usersService.list()
+    return this.profilesService.list()
   }
 
-  @Query(returns => Profile, { name: 'profile' })
+  @Query(() => Profile, { name: 'profile' })
   findById(@Args('id', { type: () => ID }) id: string) {
-    return this.usersService.findById(id)
+    return this.profilesService.findById(id)
   }
 
-  @Mutation(returns => Profile)
+  @Mutation(() => Profile)
   createProfile(@Args('createUserInput') createUserInput: CreateProfileInput) {
-    return this.usersService.create(createUserInput)
+    return this.profilesService.create(createUserInput)
   }
 
-  @Mutation(returns => Profile)
+  @Mutation(() => Profile)
   updateUProfile(@Args('updateUserInput') updateUserInput: UpdateProfileInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput)
+    return this.profilesService.update(updateUserInput.id, updateUserInput)
   }
 
-  @Mutation(returns => Profile)
+  @Mutation(() => Profile)
   removeProfile(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
-    return this.usersService.remove(id)
+    return this.profilesService.remove(id)
   }
 }
