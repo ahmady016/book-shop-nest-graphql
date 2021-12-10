@@ -3,6 +3,7 @@ import {
   BadRequestException,
   UnprocessableEntityException,
   UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common'
 
 import { Repository } from 'typeorm'
@@ -104,7 +105,7 @@ export class AuthService {
         lastName: userInput.lastName,
         birthDate: userInput.birthDate,
         gender: userInput.gender,
-      }
+      },
     })
     newUser = await this.userRepo.save(newUser)
 
@@ -124,9 +125,14 @@ export class AuthService {
     return newUser.email
   }
 
-  async activate(activateInput: ActivateInput, response: Response): Promise<User> {
+  async activate(
+    activateInput: ActivateInput,
+    response: Response,
+  ): Promise<User> {
     // get the user by email
-    let currentUser = await this.userRepo.findOne({email: activateInput.email})
+    let currentUser = await this.userRepo.findOne({
+      email: activateInput.email,
+    })
     // check user exist
     if (!currentUser) {
       throw new BadRequestException('email not found!')
@@ -149,13 +155,18 @@ export class AuthService {
 
   async signin(signinInput: SigninInput, response: Response): Promise<User> {
     // check user email
-    const currentUser = await this.userRepo.findOne({ email: signinInput.email })
+    const currentUser = await this.userRepo.findOne({
+      email: signinInput.email,
+    })
     if (!currentUser) {
       throw new BadRequestException('invalid credentials!')
     }
 
     // check user password
-    const passwordMatch = await bcrypt.compare(signinInput.password, currentUser.password)
+    const passwordMatch = await bcrypt.compare(
+      signinInput.password,
+      currentUser.password,
+    )
     if (!passwordMatch) {
       throw new BadRequestException('invalid credentials!')
     }
@@ -209,6 +220,21 @@ export class AuthService {
   currentUser(user: User): User {
     if (user) return user
     throw new UnauthorizedException()
+  }
+
+  async removeUser(id: string) {
+    const existedUser = await this.userRepo.findOne(id, {
+      relations: ['profile'],
+    })
+    if (!existedUser) throw new NotFoundException('user not found')
+
+    const deletedUser = {
+      ...existedUser,
+      profile: { ...existedUser.profile },
+    }
+    await this.profileRepo.remove(existedUser.profile)
+    await this.userRepo.remove(existedUser)
+    return deletedUser
   }
 
   findProfile(userId: string) {

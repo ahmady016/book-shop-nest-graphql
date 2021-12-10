@@ -53,6 +53,7 @@ type Mutation {
   signin(signinInput: SigninInput!): User!
   refresh: User!
   signout: String!
+  removeUser(id: ID!): User!
   createProfile(createUserInput: CreateProfileInput!): Profile!
   updateUProfile(updateUserInput: UpdateProfileInput!): Profile!
   removeProfile(id: ID!): Profile!

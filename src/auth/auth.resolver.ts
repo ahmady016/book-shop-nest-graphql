@@ -6,7 +6,10 @@ import {
   Query,
   Resolver,
   ResolveField,
+  ID,
 } from '@nestjs/graphql'
+
+import { ParseUUIDPipe } from '@nestjs/common'
 
 import { AuthService } from './auth.service'
 
@@ -59,5 +62,11 @@ export class AuthResolver {
   @Query(() => User)
   currentUser(@CurrentUser() user: User) {
     return this.authService.currentUser(user)
+  }
+
+  @Authorize()
+  @Mutation(() => User)
+  removeUser(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
+    return this.authService.removeUser(id)
   }
 }
