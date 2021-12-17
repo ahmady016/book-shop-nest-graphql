@@ -15,6 +15,13 @@ export class BooksService {
     @InjectRepository(Author) private authorsRepo: Repository<Author>,
   ) {}
 
+  async findAuthors(bookId: string) {
+    let existedBook = await this.booksRepo.findOne(bookId, {
+      relations: ['authors'],
+    })
+    return existedBook?.authors
+  }
+
   list() {
     return this.booksRepo.find({ order: { createdAt: 'ASC' } })
   }

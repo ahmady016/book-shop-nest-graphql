@@ -1,14 +1,28 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 
 import { AuthorsService } from './authors.service'
 
 import { Author } from './entities/author.entity'
+import { Book } from './entities/book.entity'
+
 import { CreateAuthorInput } from './inputs/create-author.input'
 import { UpdateAuthorInput } from './inputs/update-author.input'
-
 @Resolver(() => Author)
 export class AuthorsResolver {
   constructor(private readonly authorsService: AuthorsService) {}
+
+  @ResolveField(() => [Book])
+  books(@Parent() author: Author) {
+    return this.authorsService.findBooks(author.id)
+  }
 
   @Query(() => [Author], { name: 'authors' })
   findAll() {
@@ -21,12 +35,16 @@ export class AuthorsResolver {
   }
 
   @Mutation(() => Author)
-  createAuthor(@Args('createAuthorInput') createAuthorInput: CreateAuthorInput) {
+  createAuthor(
+    @Args('createAuthorInput') createAuthorInput: CreateAuthorInput,
+  ) {
     return this.authorsService.create(createAuthorInput)
   }
 
   @Mutation(() => Author)
-  updateAuthor(@Args('updateAuthorInput') updateAuthorInput: UpdateAuthorInput) {
+  updateAuthor(
+    @Args('updateAuthorInput') updateAuthorInput: UpdateAuthorInput,
+  ) {
     return this.authorsService.update(updateAuthorInput.id, updateAuthorInput)
   }
 

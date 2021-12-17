@@ -1,14 +1,28 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 
 import { BooksService } from './books.service'
 
 import { Book } from './entities/book.entity'
+import { Author } from './entities/author.entity'
+
 import { CreateBookInput } from './inputs/create-book.input'
 import { UpdateBookInput } from './inputs/update-book.input'
-
 @Resolver(() => Book)
 export class BooksResolver {
   constructor(private readonly booksService: BooksService) {}
+
+  @ResolveField(() => [Author])
+  authors(@Parent() book: Book) {
+    return this.booksService.findAuthors(book.id)
+  }
 
   @Query(() => [Book], { name: 'books' })
   findAll() {
