@@ -41,10 +41,49 @@ type User {
   profile: Profile
 }
 
+type Author {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String
+  isDeleted: Boolean!
+  firstName: String!
+  lastName: String!
+  gender: String!
+  birthDate: String!
+  country: String!
+  books: [Book!]
+}
+
+type Book {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String
+  isDeleted: Boolean!
+  title: String!
+  subtitle: String!
+  description: String!
+  publisher: String!
+  language: String!
+  country: String!
+  imageURL: String!
+  infoURL: String!
+  publishedYear: Float!
+  pageCount: Float!
+  authors: [Author!]
+}
+
 type Query {
   currentUser: User!
   profiles: [Profile!]!
   profile(id: ID!): Profile!
+  authors: [Author!]!
+  author(id: ID!): Author!
+  books: [Book!]!
+  book(id: ID!): Book!
 }
 
 type Mutation {
@@ -57,6 +96,12 @@ type Mutation {
   createProfile(createUserInput: CreateProfileInput!): Profile!
   updateUProfile(updateUserInput: UpdateProfileInput!): Profile!
   removeProfile(id: ID!): Profile!
+  createAuthor(createAuthorInput: CreateAuthorInput!): Author!
+  updateAuthor(updateAuthorInput: UpdateAuthorInput!): Author!
+  removeAuthor(id: ID!): Author!
+  createBook(createBookInput: CreateBookInput!): Book!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
+  removeBook(id: ID!): Book!
 }
 
 input SignupInput {
@@ -102,5 +147,51 @@ input UpdateProfileInput {
   mobile: String
   photoURL: String
   hobbies: String
+  id: ID!
+}
+
+input CreateAuthorInput {
+  firstName: String!
+  lastName: String!
+  gender: String!
+  birthDate: String!
+  country: String!
+}
+
+input UpdateAuthorInput {
+  firstName: String
+  lastName: String
+  gender: String
+  birthDate: String
+  country: String
+  id: ID!
+}
+
+input CreateBookInput {
+  title: String!
+  subtitle: String!
+  description: String!
+  publisher: String!
+  language: String!
+  country: String!
+  imageURL: String!
+  infoURL: String!
+  publishedYear: Float!
+  pageCount: Float!
+  authorsIds: [String!]!
+}
+
+input UpdateBookInput {
+  title: String
+  subtitle: String
+  description: String
+  publisher: String
+  language: String
+  country: String
+  imageURL: String
+  infoURL: String
+  publishedYear: Float
+  pageCount: Float
+  authorsIds: [String!]
   id: ID!
 }

@@ -27,34 +27,34 @@ export class Profile extends EntityBase {
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'address', type: 'varchar', length: 500, nullable: true })
-  address: string
+  address?: string
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'city', type: 'varchar', length: 100, nullable: true })
-  city: string
+  city?: string
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'country', type: 'varchar', length: 100, nullable: true })
-  country: string
+  country?: string
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'mobile', type: 'varchar', length: 11, nullable: true })
-  mobile: string
+  mobile?: string
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'photo_url', type: 'varchar', length: 400, nullable: true })
-  photoURL: string
+  photoURL?: string
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'hobbies', type: 'varchar', length: 1000, nullable: true })
-  hobbies: string
+  hobbies?: string
 
   @Field(() => String, { nullable: true })
   @Column({ name: 'user_id', nullable: true })
-  userId: string
+  userId?: string
 
   @Field(() => User, { nullable: true })
   @OneToOne(() => User, (user) => user.profile)
   @JoinColumn({ name: 'user_id' })
-  user: User
+  user?: User
 }
