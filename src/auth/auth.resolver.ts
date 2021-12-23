@@ -22,6 +22,7 @@ import { Profile } from 'src/profiles/entities/profile.entity'
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
 import { SigninInput } from './inputs/signin.input'
+import { UpdateUserInput } from './inputs/update-user.input'
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -62,6 +63,11 @@ export class AuthResolver {
   @Query(() => User)
   currentUser(@CurrentUser() user: User) {
     return this.authService.currentUser(user)
+  }
+
+  @Mutation(() => User)
+  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    return this.authService.update(updateUserInput.id, updateUserInput)
   }
 
   @Authorize()

@@ -34,6 +34,7 @@ import { Profile } from 'src/profiles/entities/profile.entity'
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
 import { SigninInput } from './inputs/signin.input'
+import { UpdateUserInput } from './inputs/update-user.input'
 
 @Injectable()
 export class AuthService {
@@ -220,6 +221,13 @@ export class AuthService {
   currentUser(user: User): User {
     if (user) return user
     throw new UnauthorizedException()
+  }
+
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    let existedUser = await this.userRepo.findOne(id)
+    if(!existedUser) throw new NotFoundException("user not found!")
+    let userToUpdate = this.userRepo.merge(existedUser, updateUserInput)
+    return this.userRepo.save(userToUpdate)
   }
 
   async removeUser(id: string) {

@@ -13,7 +13,7 @@ import { mailerConfigFactory } from './__common/mailerConfigFactory'
 
 import { AuthModule } from './auth/auth.module'
 import { ProfilesModule } from './profiles/profiles.module'
-import { BooksModule } from './books/books.module';
+import { BooksModule } from './books/books.module'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -26,7 +26,7 @@ import { BooksModule } from './books/books.module';
       context: ({ req, res }) => ({ req, res }),
       cors: {
         credentials: true,
-        origin: true
+        origin: true,
       },
       playground: true,
     }),

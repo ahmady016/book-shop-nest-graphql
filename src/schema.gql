@@ -92,9 +92,10 @@ type Mutation {
   signin(signinInput: SigninInput!): User!
   refresh: User!
   signout: String!
+  updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: ID!): User!
   createProfile(createUserInput: CreateProfileInput!): Profile!
-  updateUProfile(updateUserInput: UpdateProfileInput!): Profile!
+  updateUProfile(updateProfileInput: UpdateProfileInput!): Profile!
   removeProfile(id: ID!): Profile!
   createAuthor(createAuthorInput: CreateAuthorInput!): Author!
   updateAuthor(updateAuthorInput: UpdateAuthorInput!): Author!
@@ -107,6 +108,7 @@ type Mutation {
 input SignupInput {
   email: String!
   password: String!
+  role: String!
   firstName: String!
   lastName: String!
   gender: String!
@@ -121,6 +123,14 @@ input ActivateInput {
 input SigninInput {
   email: String!
   password: String!
+}
+
+input UpdateUserInput {
+  id: ID!
+  email: String
+  password: String
+  role: String
+  status: String
 }
 
 input CreateProfileInput {

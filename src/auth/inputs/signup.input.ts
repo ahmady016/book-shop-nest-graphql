@@ -3,7 +3,7 @@ import { Field, InputType } from '@nestjs/graphql'
 
 import { IsDateString, IsEmail, IsEnum, IsString, Length } from 'class-validator'
 
-import { Gender } from 'src/__common/types'
+import { Gender, UserRole } from 'src/__common/types'
 
 @InputType()
 export class SignupInput {
@@ -15,6 +15,10 @@ export class SignupInput {
   @IsString()
   @Length(6, 50)
   password: string
+
+  @Field(() => String)
+  @IsEnum(UserRole)
+  role: UserRole
 
   @Field(() => String)
   @IsString()
