@@ -18,6 +18,7 @@ import { CurrentUser } from './helpers/current-user.decorator'
 
 import { User } from './entities/user.entity'
 import { Profile } from 'src/profiles/entities/profile.entity'
+import { Book } from 'src/books/entities/book.entity'
 
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
@@ -31,6 +32,11 @@ export class AuthResolver {
   @ResolveField(() => Profile)
   profile(@Parent() user: User) {
     return this.authService.findProfile(user.id)
+  }
+
+  @ResolveField(() => [Book])
+  favoriteBooks(@Parent() user: User) {
+    return this.authService.findFavoriteBooks(user.id)
   }
 
   @Mutation(() => String)
@@ -74,5 +80,23 @@ export class AuthResolver {
   @Mutation(() => User)
   removeUser(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.authService.removeUser(id)
+  }
+
+  @Authorize()
+  @Mutation(() => [Book])
+  addFavoriteBook(
+    @Args('booKId', { type: () => ID }, ParseUUIDPipe) booKId: string,
+    @CurrentUser() user: User,
+  ) {
+    return this.authService.addFavoriteBook(booKId, user.id)
+  }
+
+  @Authorize()
+  @Mutation(() => [Book])
+  removeFavoriteBook(
+    @Args('booKId', { type: () => ID }, ParseUUIDPipe) booKId: string,
+    @CurrentUser() user: User,
+  ) {
+    return this.authService.removeFavoriteBook(booKId, user.id)
   }
 }

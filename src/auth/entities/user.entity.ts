@@ -1,10 +1,11 @@
-import { Column, Entity, OneToOne } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm'
 import { Field, ObjectType } from '@nestjs/graphql'
 
 import { UserRole, AccountStatus } from 'src/__common/types'
 
 import { EntityBase } from 'src/__common/EntityBase'
 import { Profile } from 'src/profiles/entities/profile.entity'
+import { Book } from 'src/books/entities/book.entity'
 
 @ObjectType()
 @Entity('users')
@@ -49,4 +50,9 @@ export class User extends EntityBase {
     cascade: ['insert', 'update', 'remove'],
   })
   profile: Profile
+
+  @Field(() => [Book], { nullable: true })
+  @ManyToMany(() => Book, book => book.favoriteCustomers)
+  @JoinTable({ name: 'customers_favorite_books' })
+  favoriteBooks?: Book[]
 }

@@ -22,6 +22,13 @@ export class BooksService {
     return existedBook?.authors
   }
 
+  async findFavoriteCustomers(bookId: string) {
+    let existedBook = await this.booksRepo.findOne(bookId, {
+      relations: ['favoriteCustomers'],
+    })
+    return existedBook?.favoriteCustomers
+  }
+
   list() {
     return this.booksRepo.find({ order: { createdAt: 'ASC' } })
   }

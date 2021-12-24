@@ -30,6 +30,7 @@ import { AccountStatus } from 'src/__common/types'
 
 import { User } from './entities/user.entity'
 import { Profile } from 'src/profiles/entities/profile.entity'
+import { Book } from 'src/books/entities/book.entity'
 
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
@@ -41,6 +42,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(Profile) private profileRepo: Repository<Profile>,
+    @InjectRepository(Book) private bookRepo: Repository<Book>,
     private jwtService: JwtService,
     private mailerService: MailerService,
   ) {}
@@ -225,7 +227,7 @@ export class AuthService {
 
   async update(id: string, updateUserInput: UpdateUserInput) {
     let existedUser = await this.userRepo.findOne(id)
-    if(!existedUser) throw new NotFoundException("user not found!")
+    if (!existedUser) throw new NotFoundException('user not found!')
     let userToUpdate = this.userRepo.merge(existedUser, updateUserInput)
     return this.userRepo.save(userToUpdate)
   }
@@ -247,5 +249,36 @@ export class AuthService {
 
   findProfile(userId: string) {
     return this.profileRepo.findOne({ userId })
+  }
+
+  async findFavoriteBooks(userId: string) {
+    let user = await this.userRepo.findOne(userId, {
+      relations: ['favoriteBooks'],
+    })
+    return user?.favoriteBooks
+  }
+
+  async addFavoriteBook(bookId: string, userId: string) {
+    const existedBook = await this.bookRepo.findOne(bookId)
+    if(!existedBook) throw new NotFoundException("book not found!")
+
+    const user = await this.userRepo.findOne(userId, {
+      relations: ['favoriteBooks'],
+    })
+    user.favoriteBooks.push(existedBook)
+    await this.userRepo.save(user)
+    return user.favoriteBooks
+  }
+
+  async removeFavoriteBook(bookId: string, userId: string) {
+    const existedBook = await this.bookRepo.findOne(bookId)
+    if(!existedBook) throw new NotFoundException("book not found!")
+
+    const user = await this.userRepo.findOne(userId, {
+      relations: ['favoriteBooks'],
+    })
+    user.favoriteBooks = user.favoriteBooks.filter(book => book.id !== bookId)
+    await this.userRepo.save(user)
+    return user.favoriteBooks
   }
 }

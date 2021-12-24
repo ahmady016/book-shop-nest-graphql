@@ -3,6 +3,7 @@ import { Column, Entity, ManyToMany } from 'typeorm'
 
 import { EntityBase } from 'src/__common/EntityBase'
 import { Author } from './author.entity'
+import { User } from 'src/auth/entities/user.entity'
 
 @ObjectType()
 @Entity('books')
@@ -50,4 +51,8 @@ export class Book extends EntityBase {
   @Field(() => [Author], { nullable: true })
   @ManyToMany(() => Author, author => author.books)
   authors?: Author[]
+
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User, user => user.favoriteBooks)
+  favoriteCustomers?: User[]
 }

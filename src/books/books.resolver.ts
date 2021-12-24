@@ -12,6 +12,7 @@ import { BooksService } from './books.service'
 
 import { Book } from './entities/book.entity'
 import { Author } from './entities/author.entity'
+import { User } from 'src/auth/entities/user.entity'
 
 import { CreateBookInput } from './inputs/create-book.input'
 import { UpdateBookInput } from './inputs/update-book.input'
@@ -22,6 +23,11 @@ export class BooksResolver {
   @ResolveField(() => [Author])
   authors(@Parent() book: Book) {
     return this.booksService.findAuthors(book.id)
+  }
+
+  @ResolveField(() => [User])
+  favoriteCustomers(@Parent() book: Book) {
+    return this.booksService.findFavoriteCustomers(book.id)
   }
 
   @Query(() => [Book], { name: 'books' })
