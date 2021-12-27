@@ -14,6 +14,7 @@ import { mailerConfigFactory } from './__common/mailerConfigFactory'
 import { AuthModule } from './auth/auth.module'
 import { ProfilesModule } from './profiles/profiles.module'
 import { BooksModule } from './books/books.module'
+import { CommentsModule } from './comments/comments.module'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -43,6 +44,7 @@ import { BooksModule } from './books/books.module'
     AuthModule,
     ProfilesModule,
     BooksModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

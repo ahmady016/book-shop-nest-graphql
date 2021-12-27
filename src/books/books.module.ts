@@ -9,9 +9,10 @@ import { BooksResolver } from './books.resolver'
 
 import { Author } from './entities/author.entity'
 import { Book } from './entities/book.entity'
+import { Comment } from 'src/comments/entities/comment.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Author])],
+  imports: [TypeOrmModule.forFeature([Book, Author, Comment])],
   providers: [AuthorsResolver, AuthorsService, BooksResolver, BooksService],
 })
 export class BooksModule {}

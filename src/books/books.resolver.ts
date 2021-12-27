@@ -30,6 +30,11 @@ export class BooksResolver {
     return this.booksService.findFavoriteCustomers(book.id)
   }
 
+  @ResolveField(() => [Comment])
+  comments(@Parent() book: Book) {
+    return this.booksService.findComments(book.id)
+  }
+
   @Query(() => [Book], { name: 'books' })
   findAll() {
     return this.booksService.list()

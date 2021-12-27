@@ -1,4 +1,11 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+} from 'typeorm'
 import { Field, ObjectType } from '@nestjs/graphql'
 
 import { UserRole, AccountStatus } from 'src/__common/types'
@@ -6,6 +13,7 @@ import { UserRole, AccountStatus } from 'src/__common/types'
 import { EntityBase } from 'src/__common/EntityBase'
 import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
+import { Comment } from 'src/comments/entities/comment.entity'
 
 @ObjectType()
 @Entity('users')
@@ -44,7 +52,7 @@ export class User extends EntityBase {
   status: AccountStatus
 
   @Field(() => Profile, { nullable: true })
-  @OneToOne(() => Profile, (profile) => profile.user, {
+  @OneToOne(() => Profile, (profile: Profile) => profile.user, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     cascade: ['insert', 'update', 'remove'],
@@ -52,7 +60,15 @@ export class User extends EntityBase {
   profile: Profile
 
   @Field(() => [Book], { nullable: true })
-  @ManyToMany(() => Book, book => book.favoriteCustomers)
+  @ManyToMany(() => Book, (book: Book) => book.favoriteCustomers)
   @JoinTable({ name: 'customers_favorite_books' })
   favoriteBooks?: Book[]
+
+  @Field(() => [Comment], { nullable: true })
+  @OneToMany(() => Comment, (comment: Comment) => comment.customer, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  comments?: Comment[]
 }

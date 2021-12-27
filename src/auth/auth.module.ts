@@ -10,10 +10,11 @@ import { AuthResolver } from './auth.resolver'
 import { User } from './entities/user.entity'
 import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
+import { Comment } from 'src/comments/entities/comment.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Profile, Book]),
+    TypeOrmModule.forFeature([User, Profile, Book, Comment]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

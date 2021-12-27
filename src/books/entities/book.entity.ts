@@ -1,9 +1,10 @@
 import { ObjectType, Field } from '@nestjs/graphql'
-import { Column, Entity, ManyToMany } from 'typeorm'
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm'
 
 import { EntityBase } from 'src/__common/EntityBase'
 import { Author } from './author.entity'
 import { User } from 'src/auth/entities/user.entity'
+import { Comment } from 'src/comments/entities/comment.entity'
 
 @ObjectType()
 @Entity('books')
@@ -49,10 +50,18 @@ export class Book extends EntityBase {
   pageCount: number
 
   @Field(() => [Author], { nullable: true })
-  @ManyToMany(() => Author, author => author.books)
+  @ManyToMany(() => Author, (author) => author.books)
   authors?: Author[]
 
   @Field(() => [User], { nullable: true })
-  @ManyToMany(() => User, user => user.favoriteBooks)
+  @ManyToMany(() => User, (user) => user.favoriteBooks)
   favoriteCustomers?: User[]
+
+  @Field(() => [Comment], { nullable: true })
+  @OneToMany(() => Comment, (comment: Comment) => comment.book, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  comments?: Comment[]
 }

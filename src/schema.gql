@@ -43,6 +43,18 @@ type Author {
   books: [Book!]
 }
 
+type Comment {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String
+  isDeleted: Boolean!
+  text: String!
+  customer: User
+  book: Book
+}
+
 type Book {
   id: ID!
   createdAt: DateTime!
@@ -62,6 +74,7 @@ type Book {
   pageCount: Float!
   authors: [Author!]
   favoriteCustomers: [User!]
+  comments: [Comment!]
 }
 
 type User {
@@ -76,6 +89,7 @@ type User {
   status: String!
   profile: Profile
   favoriteBooks: [Book!]
+  comments: [Comment!]
 }
 
 type Query {
@@ -86,6 +100,9 @@ type Query {
   author(id: ID!): Author!
   books: [Book!]!
   book(id: ID!): Book!
+  comments: [Comment!]!
+  comment(id: Int!): Comment!
+  bookComments(booKId: ID!): [Comment!]!
 }
 
 type Mutation {
@@ -107,6 +124,9 @@ type Mutation {
   createBook(createBookInput: CreateBookInput!): Book!
   updateBook(updateBookInput: UpdateBookInput!): Book!
   removeBook(id: ID!): Book!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: Int!): Comment!
 }
 
 input SignupInput {
@@ -207,5 +227,16 @@ input UpdateBookInput {
   publishedYear: Float
   pageCount: Float
   authorsIds: [String!]
+  id: ID!
+}
+
+input CreateCommentInput {
+  text: String!
+  bookId: String!
+}
+
+input UpdateCommentInput {
+  text: String
+  bookId: String
   id: ID!
 }

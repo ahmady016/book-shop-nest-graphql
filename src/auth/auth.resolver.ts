@@ -19,6 +19,7 @@ import { CurrentUser } from './helpers/current-user.decorator'
 import { User } from './entities/user.entity'
 import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
+import { Comment } from 'src/comments/entities/comment.entity'
 
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
@@ -37,6 +38,11 @@ export class AuthResolver {
   @ResolveField(() => [Book])
   favoriteBooks(@Parent() user: User) {
     return this.authService.findFavoriteBooks(user.id)
+  }
+
+  @ResolveField(() => [Comment])
+  comments(@Parent() user: User) {
+    return this.authService.findComments(user.id)
   }
 
   @Mutation(() => String)

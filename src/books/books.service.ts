@@ -4,6 +4,7 @@ import { Repository } from 'typeorm'
 
 import { Book } from './entities/book.entity'
 import { Author } from './entities/author.entity'
+import { Comment } from 'src/comments/entities/comment.entity'
 
 import { CreateBookInput } from './inputs/create-book.input'
 import { UpdateBookInput } from './inputs/update-book.input'
@@ -13,6 +14,7 @@ export class BooksService {
   constructor(
     @InjectRepository(Book) private booksRepo: Repository<Book>,
     @InjectRepository(Author) private authorsRepo: Repository<Author>,
+    @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
   ) {}
 
   async findAuthors(bookId: string) {
@@ -27,6 +29,10 @@ export class BooksService {
       relations: ['favoriteCustomers'],
     })
     return existedBook?.favoriteCustomers
+  }
+
+  findComments(bookId: string) {
+    return this.commentsRepo.find({ bookId })
   }
 
   list() {
