@@ -8,6 +8,7 @@ import {
   Parent,
 } from '@nestjs/graphql'
 
+import { ParseUUIDPipe } from '@nestjs/common'
 import { AuthorsService } from './authors.service'
 
 import { Author } from './entities/author.entity'
@@ -30,7 +31,7 @@ export class AuthorsResolver {
   }
 
   @Query(() => Author, { name: 'author' })
-  findById(@Args('id', { type: () => ID }) id: string) {
+  findById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.authorsService.findById(id)
   }
 
@@ -49,7 +50,7 @@ export class AuthorsResolver {
   }
 
   @Mutation(() => Author)
-  removeAuthor(@Args('id', { type: () => ID }) id: string) {
+  removeAuthor(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.authorsService.remove(id)
   }
 }

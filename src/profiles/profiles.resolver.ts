@@ -32,7 +32,7 @@ export class ProfilesResolver {
   }
 
   @Query(() => Profile, { name: 'profile' })
-  findById(@Args('id', { type: () => ID }) id: string) {
+  findById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.profilesService.findById(id)
   }
 

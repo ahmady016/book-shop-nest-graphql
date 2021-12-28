@@ -8,6 +8,7 @@ import {
   Parent,
 } from '@nestjs/graphql'
 
+import { ParseUUIDPipe } from '@nestjs/common'
 import { BooksService } from './books.service'
 
 import { Book } from './entities/book.entity'
@@ -41,7 +42,7 @@ export class BooksResolver {
   }
 
   @Query(() => Book, { name: 'book' })
-  findById(@Args('id', { type: () => ID }) id: string) {
+  findById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.booksService.findById(id)
   }
 
@@ -56,7 +57,7 @@ export class BooksResolver {
   }
 
   @Mutation(() => Book)
-  removeBook(@Args('id', { type: () => ID }) id: string) {
+  removeBook(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.booksService.remove(id)
   }
 }
