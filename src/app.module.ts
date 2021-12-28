@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { MulterModule } from '@nestjs/platform-express'
 
 import { PostgreConfigService } from './__common/PostgreConfigService'
 import { mailerConfigFactory } from './__common/mailerConfigFactory'
@@ -37,9 +36,6 @@ import { CommentsModule } from './comments/comments.module'
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-    }),
-    MulterModule.register({
-      dest: join(__dirname, '..', 'public'),
     }),
     AuthModule,
     ProfilesModule,
