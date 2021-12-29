@@ -25,6 +25,7 @@ import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
 import { SigninInput } from './inputs/signin.input'
 import { UpdateUserInput } from './inputs/update-user.input'
+import { Rating } from 'src/ratings/entities/rating.entity'
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -43,6 +44,11 @@ export class AuthResolver {
   @ResolveField(() => [Comment])
   comments(@Parent() user: User) {
     return this.authService.findComments(user.id)
+  }
+
+  @ResolveField(() => [Rating])
+  ratings(@Parent() user: User) {
+    return this.authService.findRatings(user.id)
   }
 
   @Mutation(() => String)

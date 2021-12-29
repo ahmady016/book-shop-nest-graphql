@@ -1,10 +1,11 @@
-import { ObjectType, Field } from '@nestjs/graphql'
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql'
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm'
 
 import { EntityBase } from 'src/__common/EntityBase'
 import { Author } from './author.entity'
 import { User } from 'src/auth/entities/user.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
+import { Rating } from 'src/ratings/entities/rating.entity'
 
 @ObjectType()
 @Entity('books')
@@ -41,13 +42,25 @@ export class Book extends EntityBase {
   @Column({ name: 'info_url', type: 'varchar', length: 500 })
   infoURL: string
 
-  @Field(() => Number)
+  @Field(() => Int)
   @Column({ name: 'published_year', type: 'int' })
   publishedYear: number
 
-  @Field(() => Number)
+  @Field(() => Int)
   @Column({ name: 'page_count', type: 'int' })
   pageCount: number
+
+  @Field(() => Int)
+  @Column({ name: 'ratings_count', type: 'int', default: 0 })
+  ratingsCount: number
+
+  @Field(() => Float)
+  @Column({ name: 'rating_average', type: 'decimal', default: 0.0 })
+  ratingAverage: number
+
+  @Field(() => String, { nullable: true })
+  @Column({ name: 'notes', type: 'varchar', length: 1000, default: 'Great Book!', nullable: true })
+  notes: string
 
   @Field(() => [Author], { nullable: true })
   @ManyToMany(() => Author, (author) => author.books)
@@ -64,4 +77,12 @@ export class Book extends EntityBase {
     cascade: ['insert', 'update', 'remove'],
   })
   comments?: Comment[]
+
+  @Field(() => [Rating], { nullable: true })
+  @OneToMany(() => Rating, (rating: Rating) => rating.book, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  ratings?: Rating[]
 }

@@ -44,7 +44,7 @@ export function AuthGuard(roles: string[]): Type<CanActivate> {
       }
 
       if (context.currentUser) {
-        logger.log(`currentUser => ${context.currentUser.email}`)
+        logger.log(`currentUser (Access Token) => ${context.currentUser.email}`)
         const { role } = context.currentUser
         if (!roles.length || roles.includes(role)) return true
       }

@@ -4,6 +4,7 @@ import {
   UnprocessableEntityException,
   UnauthorizedException,
   NotFoundException,
+  Logger,
 } from '@nestjs/common'
 
 import { Repository } from 'typeorm'
@@ -32,6 +33,7 @@ import { User } from './entities/user.entity'
 import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
+import { Rating } from 'src/ratings/entities/rating.entity'
 
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
@@ -45,6 +47,7 @@ export class AuthService {
     @InjectRepository(Profile) private profileRepo: Repository<Profile>,
     @InjectRepository(Book) private bookRepo: Repository<Book>,
     @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
+    @InjectRepository(Rating) private ratingsRepo: Repository<Rating>,
     private jwtService: JwtService,
     private mailerService: MailerService,
   ) {}
@@ -184,30 +187,22 @@ export class AuthService {
   }
 
   async refresh(request: Request, response: Response): Promise<User> {
-    let currentUser = (request as ApiRequest).currentUser
-    if (currentUser) {
-      return currentUser
-    }
+    let currentUser: User
+    const logger = new Logger('AuthService')
 
     if (request.cookies) {
       const refreshToken = request.cookies[REFRESH_TOKEN.key]
-      console.log(
-        '🚀: AuthService => refreshTokens -> refreshToken',
-        refreshToken,
-      )
       if (refreshToken) {
         try {
           const { email } = this.verifyToken(refreshToken) as TokenPayload
           if (email) {
             currentUser = await this.userRepo.findOne({ email })
             this.createTokensAndSetCookies(currentUser, response)
+            logger.log(`currentUser (Refresh Tokens) => ${currentUser.email}`)
             return currentUser
           }
         } catch (error) {
-          console.log(
-            '🚀: AuthService => refreshTokens -> refreshTokenError',
-            error,
-          )
+          logger.log(`refreshTokenError => ${error}`)
           throw new UnauthorizedException()
         }
       }
@@ -255,6 +250,10 @@ export class AuthService {
 
   findComments(userId: string) {
     return this.commentsRepo.find({ customerId: userId })
+  }
+
+  findRatings(userId: string) {
+    return this.ratingsRepo.find({ customerId: userId })
   }
 
   async findFavoriteBooks(userId: string) {

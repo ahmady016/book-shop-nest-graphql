@@ -14,6 +14,7 @@ import { EntityBase } from 'src/__common/EntityBase'
 import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
+import { Rating } from 'src/ratings/entities/rating.entity'
 
 @ObjectType()
 @Entity('users')
@@ -71,4 +72,12 @@ export class User extends EntityBase {
     cascade: ['insert', 'update', 'remove'],
   })
   comments?: Comment[]
+
+  @Field(() => [Rating], { nullable: true })
+  @OneToMany(() => Rating, (rating: Rating) => rating.customer, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  ratings?: Rating[]
 }
