@@ -1,7 +1,8 @@
 import { ObjectType, Field, Int, Float } from '@nestjs/graphql'
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm'
+import { Column, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm'
 
 import { EntityBase } from 'src/__common/EntityBase'
+import { Stock } from './stock.entity'
 import { Author } from './author.entity'
 import { User } from 'src/auth/entities/user.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
@@ -61,6 +62,14 @@ export class Book extends EntityBase {
   @Field(() => String, { nullable: true })
   @Column({ name: 'notes', type: 'varchar', length: 1000, default: 'Great Book!', nullable: true })
   notes: string
+
+  @Field(() => Stock, { nullable: true })
+  @OneToOne(() => Stock, (stock: Stock) => stock.book, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  stock: Stock
 
   @Field(() => [Author], { nullable: true })
   @ManyToMany(() => Author, (author) => author.books)
