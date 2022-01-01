@@ -15,6 +15,7 @@ import { ProfilesModule } from './profiles/profiles.module'
 import { BooksModule } from './books/books.module'
 import { CommentsModule } from './comments/comments.module'
 import { RatingsModule } from './ratings/ratings.module';
+import { PurchasesModule } from './purchases/purchases.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -43,6 +44,7 @@ import { RatingsModule } from './ratings/ratings.module';
     BooksModule,
     CommentsModule,
     RatingsModule,
+    PurchasesModule,
   ],
 })
 export class AppModule {}

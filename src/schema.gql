@@ -84,6 +84,33 @@ type Rating {
   book: Book
 }
 
+type Purchase {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String
+  isDeleted: Boolean!
+  purchaseDate: DateTime!
+  totalPrice: Float!
+  employee: [User!]
+  items: [PurchaseItem!]
+}
+
+type PurchaseItem {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: String!
+  updatedBy: String
+  isDeleted: Boolean!
+  quantity: Int!
+  unitPrice: Float!
+  totalPrice: Float!
+  book: [Book!]
+  purchase: [Purchase!]
+}
+
 type Book {
   id: ID!
   createdAt: DateTime!
@@ -109,6 +136,7 @@ type Book {
   favoriteCustomers: [User!]
   comments: [Comment!]
   ratings: [Rating!]
+  purchasesItems: [PurchaseItem!]
 }
 
 type User {
@@ -125,6 +153,7 @@ type User {
   favoriteBooks: [Book!]
   comments: [Comment!]
   ratings: [Rating!]
+  purchases: [Purchase!]
 }
 
 type Query {
@@ -140,6 +169,8 @@ type Query {
   bookComments(booKId: ID!): [Comment!]!
   ratings: [Rating!]!
   rating(id: Int!): Rating!
+  purchases: [Purchase!]!
+  purchase(id: String!): Purchase!
 }
 
 type Mutation {
@@ -167,6 +198,9 @@ type Mutation {
   createRating(createRatingInput: CreateRatingInput!): Rating!
   updateRating(updateRatingInput: UpdateRatingInput!): Rating!
   removeRating(id: Int!): Rating!
+  createPurchaseWithItems(createPurchaseWithItemsInput: CreatePurchaseWithItemsInput!): Purchase!
+  updatePurchase(updatePurchaseInput: UpdatePurchaseInput!): Purchase!
+  removePurchase(id: String!): Purchase!
 }
 
 input SignupInput {
@@ -289,4 +323,27 @@ input CreateRatingInput {
 input UpdateRatingInput {
   id: ID!
   value: Int!
+}
+
+input CreatePurchaseWithItemsInput {
+  purchase: CreatePurchaseInput!
+  items: [CreatePurchaseItemInput!]!
+}
+
+input CreatePurchaseInput {
+  purchaseDate: String!
+  totalPrice: Float
+}
+
+input CreatePurchaseItemInput {
+  bookId: String!
+  quantity: Int!
+  unitPrice: Float!
+  totalPrice: Float
+}
+
+input UpdatePurchaseInput {
+  purchaseDate: String
+  totalPrice: Float
+  id: ID!
 }

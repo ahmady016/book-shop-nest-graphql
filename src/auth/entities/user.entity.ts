@@ -15,6 +15,7 @@ import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
+import { Purchase } from 'src/purchases/entities/purchase.entity'
 
 @ObjectType()
 @Entity('users')
@@ -80,4 +81,12 @@ export class User extends EntityBase {
     cascade: ['insert', 'update', 'remove'],
   })
   ratings?: Rating[]
+
+  @Field(() => [Purchase], { nullable: true })
+  @OneToMany(() => Purchase, (purchase: Purchase) => purchase.employee, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  purchases?: Purchase[]
 }

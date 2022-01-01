@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { Book } from './entities/book.entity'
+import { Stock } from './entities/stock.entity'
 import { Author } from './entities/author.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
@@ -14,6 +15,7 @@ import { UpdateBookInput } from './inputs/update-book.input'
 export class BooksService {
   constructor(
     @InjectRepository(Book) private booksRepo: Repository<Book>,
+    @InjectRepository(Stock) private stocksRepo: Repository<Stock>,
     @InjectRepository(Author) private authorsRepo: Repository<Author>,
     @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
     @InjectRepository(Rating) private ratingsRepo: Repository<Rating>,
@@ -52,10 +54,16 @@ export class BooksService {
   }
 
   async create(createBookInput: CreateBookInput) {
+    // create and save book with authors
     const { authorsIds,  ...bookToCreate } = createBookInput
     let newBook = this.booksRepo.create(bookToCreate)
     newBook.authors = await this.authorsRepo.findByIds(authorsIds)
-    return this.booksRepo.save(newBook)
+    newBook = await this.booksRepo.save(newBook)
+    // create and save book stock with default values
+    const newStock = this.stocksRepo.create({ bookId: newBook.id })
+    await this.stocksRepo.save(newStock)
+    // return newBook
+    return newBook
   }
 
   async update(id: string, updateBookInput: UpdateBookInput) {

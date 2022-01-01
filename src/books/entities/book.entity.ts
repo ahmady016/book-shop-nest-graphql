@@ -7,6 +7,7 @@ import { Author } from './author.entity'
 import { User } from 'src/auth/entities/user.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
+import { PurchaseItem } from 'src/purchases/entities/purchase-item.entity'
 
 @ObjectType()
 @Entity('books')
@@ -94,4 +95,12 @@ export class Book extends EntityBase {
     cascade: ['insert', 'update', 'remove'],
   })
   ratings?: Rating[]
+
+  @Field(() => [PurchaseItem], { nullable: true })
+  @OneToMany(() => PurchaseItem, (purchaseItem: PurchaseItem) => purchaseItem.book, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  purchasesItems?: PurchaseItem[]
 }
