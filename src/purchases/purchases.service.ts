@@ -15,8 +15,7 @@ export class PurchasesService {
   constructor(
     @InjectRepository(User) private usersRepo: Repository<User>,
     @InjectRepository(Purchase) private purchasesRepo: Repository<Purchase>,
-    @InjectRepository(PurchaseItem)
-    private purchasesItemsRepo: Repository<PurchaseItem>,
+    @InjectRepository(PurchaseItem) private purchasesItemsRepo: Repository<PurchaseItem>,
     @InjectRepository(Stock) private stocksRepo: Repository<Stock>,
   ) {}
 
