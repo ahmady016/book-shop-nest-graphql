@@ -19,10 +19,18 @@ export class Sale extends EntityBase {
   @Column({ name: 'employee_id', type: 'uuid' })
   employeeId: string
 
-  @Field(() => [User], { nullable: true })
-  @ManyToOne(() => User, (user) => user.sales)
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.employeeSales)
   @JoinColumn({ name: 'employee_id' })
   employee?: User
+
+  @Column({ name: 'customer_id', type: 'uuid' })
+  customerId: string
+
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (user: User) => user.customerSales)
+  @JoinColumn({ name: 'customer_id' })
+  customer?: User
 
   @Field(() => [SaleItem], { nullable: true })
   @OneToMany(() => SaleItem, (saleItem: SaleItem) => saleItem.sale, {

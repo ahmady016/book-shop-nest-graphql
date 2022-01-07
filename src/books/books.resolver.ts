@@ -15,6 +15,8 @@ import { Book } from './entities/book.entity'
 import { Author } from './entities/author.entity'
 import { User } from 'src/auth/entities/user.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
+import { PurchaseItem } from 'src/purchases/entities/purchase-item.entity'
+import { SaleItem } from 'src/sales/entities/sale-item.entity'
 
 import { CreateBookInput } from './inputs/create-book.input'
 import { UpdateBookInput } from './inputs/update-book.input'
@@ -40,6 +42,16 @@ export class BooksResolver {
   @ResolveField(() => [Rating])
   ratings(@Parent() book: Book) {
     return this.booksService.findRatings(book.id)
+  }
+
+  @ResolveField(() => [PurchaseItem])
+  purchasesItems(@Parent() book: Book) {
+    return this.booksService.findPurchasesItems(book.id)
+  }
+
+  @ResolveField(() => [SaleItem])
+  salesItems(@Parent() book: Book) {
+    return this.booksService.findSalesItems(book.id)
   }
 
   @Query(() => [Book], { name: 'books' })

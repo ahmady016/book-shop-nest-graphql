@@ -93,7 +93,7 @@ type Purchase {
   isDeleted: Boolean!
   purchaseDate: DateTime!
   totalPrice: Float!
-  employee: [User!]
+  employee: User
   items: [PurchaseItem!]
 }
 
@@ -120,7 +120,8 @@ type Sale {
   isDeleted: Boolean!
   saleDate: DateTime!
   totalPrice: Float!
-  employee: [User!]
+  employee: User
+  customer: User
   items: [SaleItem!]
 }
 
@@ -182,7 +183,8 @@ type User {
   comments: [Comment!]
   ratings: [Rating!]
   purchases: [Purchase!]
-  sales: [Sale!]
+  employeeSales: [Sale!]
+  customerSales: [Sale!]
 }
 
 type Query {
@@ -388,6 +390,7 @@ input CreateSaleWithItemsInput {
 }
 
 input CreateSaleInput {
+  customerId: String!
   saleDate: String!
   totalPrice: Float
 }
@@ -400,6 +403,7 @@ input CreateSaleItemInput {
 }
 
 input UpdateSaleInput {
+  customerId: String
   saleDate: String
   totalPrice: Float
   id: ID!

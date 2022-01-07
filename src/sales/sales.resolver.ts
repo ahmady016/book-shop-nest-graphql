@@ -25,7 +25,12 @@ export class SalesResolver {
 
   @ResolveField(() => User)
   employee(@Parent() sale: Sale) {
-    return this.salesService.findEmployee(sale.employeeId)
+    return this.salesService.findUser(sale.employeeId)
+  }
+
+  @ResolveField(() => User)
+  customer(@Parent() sale: Sale) {
+    return this.salesService.findUser(sale.customerId)
   }
 
   @ResolveField(() => [SaleItem])

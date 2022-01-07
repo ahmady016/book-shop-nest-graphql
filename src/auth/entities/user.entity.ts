@@ -97,5 +97,13 @@ export class User extends EntityBase {
     onUpdate: 'CASCADE',
     cascade: ['insert', 'update', 'remove'],
   })
-  sales?: Sale[]
+  employeeSales?: Sale[]
+
+  @Field(() => [Sale], { nullable: true })
+  @OneToMany(() => Sale, (sale: Sale) => sale.customer, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  customerSales?: Sale[]
 }

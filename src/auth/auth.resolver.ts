@@ -20,12 +20,14 @@ import { User } from './entities/user.entity'
 import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
+import { Rating } from 'src/ratings/entities/rating.entity'
+import { Purchase } from './../purchases/entities/purchase.entity'
+import { Sale } from 'src/sales/entities/sale.entity'
 
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
 import { SigninInput } from './inputs/signin.input'
 import { UpdateUserInput } from './inputs/update-user.input'
-import { Rating } from 'src/ratings/entities/rating.entity'
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -49,6 +51,21 @@ export class AuthResolver {
   @ResolveField(() => [Rating])
   ratings(@Parent() user: User) {
     return this.authService.findRatings(user.id)
+  }
+
+  @ResolveField(() => [Purchase])
+  purchases(@Parent() user: User) {
+    return this.authService.findPurchases(user.id)
+  }
+
+  @ResolveField(() => [Sale])
+  employeeSales(@Parent() user: User) {
+    return this.authService.findEmployeeSales(user.id)
+  }
+
+  @ResolveField(() => [Sale])
+  customerSales(@Parent() user: User) {
+    return this.authService.findCustomerSales(user.id)
   }
 
   @Mutation(() => String)

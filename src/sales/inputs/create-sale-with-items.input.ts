@@ -4,6 +4,10 @@ import { IsDateString, IsOptional, IsInt, Min, IsUUID } from 'class-validator'
 @InputType()
 export class CreateSaleInput {
   @Field(() => String)
+  @IsUUID()
+  customerId: string
+
+  @Field(() => String)
   @IsDateString()
   saleDate: string
 

@@ -12,10 +12,20 @@ import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
+import { Purchase } from 'src/purchases/entities/purchase.entity'
+import { Sale } from 'src/sales/entities/sale.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Profile, Book, Comment, Rating]),
+    TypeOrmModule.forFeature([
+      User,
+      Profile,
+      Book,
+      Comment,
+      Rating,
+      Purchase,
+      Sale,
+    ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -26,6 +36,6 @@ import { Rating } from 'src/ratings/entities/rating.entity'
     }),
   ],
   providers: [AuthResolver, AuthService],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

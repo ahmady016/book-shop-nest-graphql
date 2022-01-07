@@ -19,7 +19,7 @@ export class Purchase extends EntityBase {
   @Column({ name: 'employee_id', type: 'uuid' })
   employeeId: string
 
-  @Field(() => [User], { nullable: true })
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.purchases)
   @JoinColumn({ name: 'employee_id' })
   employee?: User

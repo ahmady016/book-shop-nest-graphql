@@ -48,7 +48,7 @@ export class SalesService {
     await this.stocksRepo.save(stocks)
   }
 
-  findEmployee(employeeId: string) {
+  findUser(employeeId: string) {
     return this.usersRepo.findOne(employeeId)
   }
 

@@ -34,6 +34,8 @@ import { Profile } from 'src/profiles/entities/profile.entity'
 import { Book } from 'src/books/entities/book.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
+import { Purchase } from './../purchases/entities/purchase.entity'
+import { Sale } from 'src/sales/entities/sale.entity'
 
 import { SignupInput } from './inputs/signup.input'
 import { ActivateInput } from './inputs/activate.input'
@@ -48,6 +50,8 @@ export class AuthService {
     @InjectRepository(Book) private bookRepo: Repository<Book>,
     @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
     @InjectRepository(Rating) private ratingsRepo: Repository<Rating>,
+    @InjectRepository(Purchase) private purchasesRepo: Repository<Purchase>,
+    @InjectRepository(Sale) private salesRepo: Repository<Sale>,
     private jwtService: JwtService,
     private mailerService: MailerService,
   ) {}
@@ -254,6 +258,18 @@ export class AuthService {
 
   findRatings(userId: string) {
     return this.ratingsRepo.find({ customerId: userId })
+  }
+
+  findPurchases(userId: string) {
+    return this.purchasesRepo.find({ employeeId: userId })
+  }
+
+  findEmployeeSales(userId: string) {
+    return this.salesRepo.find({ employeeId: userId })
+  }
+
+  findCustomerSales(userId: string) {
+    return this.salesRepo.find({ customerId: userId })
   }
 
   async findFavoriteBooks(userId: string) {

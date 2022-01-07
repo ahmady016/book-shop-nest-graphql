@@ -7,6 +7,8 @@ import { Stock } from './entities/stock.entity'
 import { Author } from './entities/author.entity'
 import { Comment } from 'src/comments/entities/comment.entity'
 import { Rating } from 'src/ratings/entities/rating.entity'
+import { PurchaseItem } from 'src/purchases/entities/purchase-item.entity'
+import { SaleItem } from 'src/sales/entities/sale-item.entity'
 
 import { CreateBookInput } from './inputs/create-book.input'
 import { UpdateBookInput } from './inputs/update-book.input'
@@ -19,6 +21,8 @@ export class BooksService {
     @InjectRepository(Author) private authorsRepo: Repository<Author>,
     @InjectRepository(Comment) private commentsRepo: Repository<Comment>,
     @InjectRepository(Rating) private ratingsRepo: Repository<Rating>,
+    @InjectRepository(PurchaseItem) private purchasesItemsRepo: Repository<PurchaseItem>,
+    @InjectRepository(SaleItem) private salesItemsRepo: Repository<SaleItem>,
   ) {}
 
   async findAuthors(bookId: string) {
@@ -41,6 +45,14 @@ export class BooksService {
 
   findRatings(bookId: string) {
     return this.ratingsRepo.find({ bookId })
+  }
+
+  findPurchasesItems(bookId: string) {
+    return this.purchasesItemsRepo.find({ bookId })
+  }
+
+  findSalesItems(bookId: string) {
+    return this.salesItemsRepo.find({ bookId })
   }
 
   list() {
